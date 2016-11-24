@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<package>
+  <name>UE_ROS_Bridge</name>
+  <version>0.0.1</version>
+  <description>Unreal Engine to ROS bridge</description>
+
+  <maintainer email="blandc@cs.uni-bremen.de">Susanne Knoop</maintainer>
+
+
+  <license>BSD</license>
+
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>rospy</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>tf</build_depend>
+
+  <run_depend>rospy</run_depend>
+  <run_depend>std_msgs</run_depend>
+  <run_depend>tf</run_depend>
+
+
+  <!-- The export tag contains other, unspecified, tags -->
+  <export>
+  </export>
+</package>
