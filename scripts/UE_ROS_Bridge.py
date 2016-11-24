@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import logging
 logging.basicConfig(level=logging.DEBUG)
 import rospy
@@ -5,6 +7,8 @@ import rospy
 import tf
 from tf.msg import tfMessage
 import geometry_msgs.msg
+
+from UE_ROS_Bridge_ListenerBase import SetupListeners
 
 # imports services to call
 # imports messages to publish
@@ -16,6 +20,7 @@ from tinyrpc.protocols.jsonrpc import JSONRPCProtocol
 from tinyrpc.transports.wsgi import WsgiServerTransport
 from tinyrpc.server.gevent import RPCServerGreenlets
 from tinyrpc.dispatch import RPCDispatcher
+from threading import Lock
 
 dispatcher = RPCDispatcher()
 transport = WsgiServerTransport(queue_class=gevent.queue.Queue)
@@ -34,6 +39,11 @@ TFPublisher = rospy.Publisher('tf', tfMessage, queue_size=1)
 rospy.init_node('UE_ROS_Bridge')
 tfBroadcaster = tf.TransformBroadcaster()
 
+messagePages = [[], []]
+messageSendingPage = [0]
+pageMutex = Lock()
+
+SetupListeners(mutex, messagePages, messageSendingPage)
 
 @dispatcher.public
 def ROSPublishTF(frame_id, child_frame_id, x, y, z, qx, qy, qz, qw):
@@ -46,7 +56,9 @@ def ROSPublishTF(frame_id, child_frame_id, x, y, z, qx, qy, qz, qw):
 
 @dispatcher.public
 def ROSPublishTopics(params):
-    print params
+    global messagePages
+	global messageSendingPage
+	global pageMutex
     tfMessages = tfMessage()
     seqTf = 0
     for message in params:
@@ -72,6 +84,13 @@ def ROSPublishTopics(params):
         else:
             print "Unrecognized topic " + topic
     TFPublisher.publish(tfMessages)
+	
+	pageMutex.acquire()
+	messagePages[messageSendingPage[0]].clear()
+	messageSendingPage[0] = messageSendingPage[0] ^ 1
+	pageMutex.release()
+	
+	return {"messages": messagePages[messageSendingPage[0]]}
 
 # in the main greenlet, run our rpc_server
 rpc_server.serve_forever()
