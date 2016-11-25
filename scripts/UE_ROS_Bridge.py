@@ -39,11 +39,11 @@ TFPublisher = rospy.Publisher('tf', tfMessage, queue_size=1)
 rospy.init_node('UE_ROS_Bridge')
 tfBroadcaster = tf.TransformBroadcaster()
 
-messagePages = [[], []]
+messagePages = [{}, {}]
 messageSendingPage = [0]
 pageMutex = Lock()
 
-SetupListeners(mutex, messagePages, messageSendingPage)
+SetupListeners(pageMutex, messagePages, messageSendingPage)
 
 @dispatcher.public
 def ROSPublishTF(frame_id, child_frame_id, x, y, z, qx, qy, qz, qw):
@@ -57,8 +57,8 @@ def ROSPublishTF(frame_id, child_frame_id, x, y, z, qx, qy, qz, qw):
 @dispatcher.public
 def ROSPublishTopics(params):
     global messagePages
-	global messageSendingPage
-	global pageMutex
+    global messageSendingPage
+    global pageMutex
     tfMessages = tfMessage()
     seqTf = 0
     for message in params:
@@ -85,12 +85,12 @@ def ROSPublishTopics(params):
             print "Unrecognized topic " + topic
     TFPublisher.publish(tfMessages)
 	
-	pageMutex.acquire()
-	messagePages[messageSendingPage[0]].clear()
-	messageSendingPage[0] = messageSendingPage[0] ^ 1
-	pageMutex.release()
-	
-	return {"messages": messagePages[messageSendingPage[0]]}
+    pageMutex.acquire()
+    messagePages[messageSendingPage[0]].clear()
+    messageSendingPage[0] = messageSendingPage[0] ^ 1
+    pageMutex.release()
+    
+    return {"messages": messagePages[messageSendingPage[0]]}
 
 # in the main greenlet, run our rpc_server
 rpc_server.serve_forever()
