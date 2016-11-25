@@ -8,7 +8,7 @@ import tf
 from tf.msg import tfMessage
 import geometry_msgs.msg
 
-from UE_ROS_Bridge_ListenerBase import SetupListeners
+from UE_ROS_Bridge_ListenerBase import SetupListeners, SetupServiceListeners
 
 # imports services to call
 # imports messages to publish
@@ -39,11 +39,13 @@ TFPublisher = rospy.Publisher('tf', tfMessage, queue_size=1)
 rospy.init_node('UE_ROS_Bridge')
 tfBroadcaster = tf.TransformBroadcaster()
 
+serviceHandlers = {}
 messagePages = [{}, {}]
 messageSendingPage = [0]
 pageMutex = Lock()
 
 SetupListeners(pageMutex, messagePages, messageSendingPage)
+SetupServiceListeners(pageMutex, messagePages, messageSendingPage, serviceHandlers)
 
 @dispatcher.public
 def ROSPublishTF(frame_id, child_frame_id, x, y, z, qx, qy, qz, qw):
@@ -91,6 +93,13 @@ def ROSPublishTopics(params):
     pageMutex.release()
     
     return {"messages": messagePages[messageSendingPage[0]]}
+
+@dispatcher.public
+def ROSCallService(params):
+    service = params['service']
+    request = params['request']
+    if service in serviceHandlers:
+        serviceHandlers[service](request)
 
 # in the main greenlet, run our rpc_server
 rpc_server.serve_forever()
