@@ -26,7 +26,7 @@ from tinyrpc.dispatch import RPCDispatcher
 from threading import Lock
 
 dispatcher = RPCDispatcher()
-transport = WsgiServerTransport(queue_class=gevent.queue.Queue)
+transport = WsgiServerTransport(max_content_length=4096*1024, queue_class=gevent.queue.Queue)
 
 # start wsgi server as a background-greenlet
 wsgi_server = gevent.wsgi.WSGIServer(('0.0.0.0', 10090), transport.handle)
