@@ -37,5 +37,5 @@ def SetupServiceListeners(mutex, messagePages, messageSendingPage, serviceHandle
         #                                  name        type
         serviceHandle = rospy.ServiceProxy(service[0], service[1])
                                       #                                                                         name        readQuery   readResponse
-        serviceHandlers[service[0]] = makeServiceCaller(serviceHandle, mutex, messagePages, messageSendingPage, service[0], service[2], service[3]))
+        serviceHandlers[service[0]] = makeServiceCaller(serviceHandle, mutex, messagePages, messageSendingPage, service[0], service[2], service[3])
         
