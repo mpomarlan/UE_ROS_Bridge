@@ -28,7 +28,7 @@ def makeServiceCaller(serviceHandle, mutex, messagePages, messageSendingPage, na
 
 def SetupListeners(mutex, messagePages, messageSendingPage):
     for topic in SubscribedTopics:
-	    #                name      type                                                                      msg reader
+	    #                name      type                                                            msg       reader
 	    rospy.Subscriber(topic[0], topic[1], makeCallback(mutex, messagePages, messageSendingPage, topic[0], topic[2]))
 
 
