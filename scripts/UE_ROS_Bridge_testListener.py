@@ -35,9 +35,9 @@ prgThread.setDaemon(True)
 prgThread.start()
 
 while not rospy.is_shutdown():
-    tN = rospy.Time.now()
-    pub.publish("Display Text: " + str(k) + " :: " + str(tN.secs) + " " + str(tN.nsecs))
-    k = k + 1
+    #tN = rospy.Time.now()
+    #pub.publish("Display Text: " + str(k) + " :: " + str(tN.secs) + " " + str(tN.nsecs))
+    #k = k + 1
     r.sleep()
 
 
