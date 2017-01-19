@@ -11,10 +11,11 @@ import geometry_msgs.msg
 import sys
 import signal
 
-from UE_ROS_Bridge_ListenerBase import SetupListeners, SetupServiceListeners
-
 # imports services to call
-# imports messages to publish
+# imports messages to publish/subscribe to
+
+from UE_ROS_Bridge_ListenerBase import SetupListeners, SetupServiceListeners
+from UE_ROS_Bridge_PublisherBase import SetupPublishers
 
 import gevent
 import gevent.wsgi
@@ -49,6 +50,8 @@ pageMutex = Lock()
 
 SetupListeners(pageMutex, messagePages, messageSendingPage)
 SetupServiceListeners(pageMutex, messagePages, messageSendingPage, serviceHandlers)
+publisherMap = {}
+SetupPublishers(publisherMap)
 
 @dispatcher.public
 def ROSPublishTF(frame_id, child_frame_id, x, y, z, qx, qy, qz, qw):
@@ -64,6 +67,7 @@ def ROSPublishTopics(params):
     global messagePages
     global messageSendingPage
     global pageMutex
+    global publisherMap
     tfMessages = tfMessage()
     seqTf = 0
     for message in params:
@@ -84,6 +88,11 @@ def ROSPublishTopics(params):
             msg.transform.rotation.w = float(params['qw'])
             seqTf = seqTf + 1
             tfMessages.transforms.append(msg)
+        elif topic in publisherMap:
+            publisherEntry = publisherMap[topic]
+            publisher = publisherEntry[0]
+            reader = publisherEntry[1]
+            publihser.publish(reader(params))
         elif (topic == 'huh'):
             print "Placeholder topic"
         else:

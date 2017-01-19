@@ -1,10 +1,20 @@
 import rospy
 from std_msgs.msg import String
 
-def readString(data):
-    return {"data": data.data}
+import sherpa_msgs.msg
+import actionlib_msgs.msg
 
-def readDisplayText(msg):
-    return {"text": msg.data}
+def readString(data):
+    return {"data": str(data.data)}
+
+def readActionlibCancel(msg):
+    return {"goal_id": str(msg.id)}
 	
-SubscribedTopics = (('test_topic', String, readString), ('display_command', String, readDisplayText))
+def readDisplayText(msg):
+    return {"text": str(msg.data)}
+
+def readTakePictureGoal(msg):
+    return {"goal_id": str(msg.goal_id.id)}
+
+SubscribedTopics = (('test_topic', String, readString), ('display_command', String, readDisplayText), 
+                    ('red_wasp/TakePicture/goal', sherpa_msgs.msg.TakePictureActionGoal, readTakePictureGoal), ('red_wasp/TakePicture/cancel', actionlib_msgs.msg.GoalID, readActionlibCancel))
