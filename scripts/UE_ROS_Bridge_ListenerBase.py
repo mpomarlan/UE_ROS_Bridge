@@ -28,7 +28,7 @@ def makeServiceCaller(serviceHandle, mutex, messagePages, messageSendingPage, na
 
 def SetupListeners(mutex, messagePages, messageSendingPage):
     for topic in SubscribedTopics:
-	    #                name      type                                                                      msg reader
+	    #                name      type                                                            msg       reader
 	    rospy.Subscriber(topic[0], topic[1], makeCallback(mutex, messagePages, messageSendingPage, topic[0], topic[2]))
 
 
@@ -37,5 +37,5 @@ def SetupServiceListeners(mutex, messagePages, messageSendingPage, serviceHandle
         #                                  name        type
         serviceHandle = rospy.ServiceProxy(service[0], service[1])
                                       #                                                                         name        readQuery   readResponse
-        serviceHandlers[service[0]] = makeServiceCaller(serviceHandle, mutex, messagePages, messageSendingPage, service[0], service[2], service[3]))
+        serviceHandlers[service[0]] = makeServiceCaller(serviceHandle, mutex, messagePages, messageSendingPage, service[0], service[2], service[3])
         

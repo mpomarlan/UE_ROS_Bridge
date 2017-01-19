@@ -8,6 +8,9 @@ import tf
 from tf.msg import tfMessage
 import geometry_msgs.msg
 
+import sys
+import signal
+
 from UE_ROS_Bridge_ListenerBase import SetupListeners, SetupServiceListeners
 
 # imports services to call
@@ -23,7 +26,7 @@ from tinyrpc.dispatch import RPCDispatcher
 from threading import Lock
 
 dispatcher = RPCDispatcher()
-transport = WsgiServerTransport(queue_class=gevent.queue.Queue)
+transport = WsgiServerTransport(max_content_length=4096*1024, queue_class=gevent.queue.Queue)
 
 # start wsgi server as a background-greenlet
 wsgi_server = gevent.wsgi.WSGIServer(('0.0.0.0', 10090), transport.handle)
@@ -93,6 +96,12 @@ def ROSPublishTopics(params):
     pageMutex.release()
     
     return {"messages": messagePages[messageSendingPage[0]]}
+
+def exit_gracefully(signum, frame):
+    sys.exit(0)
+
+signal.signal(signal.SIGINT, exit_gracefully)
+signal.signal(signal.SIGTERM, exit_gracefully)
 
 @dispatcher.public
 def ROSCallService(params):
