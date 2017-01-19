@@ -7,4 +7,4 @@ def readString(data):
 def readDisplayText(msg):
     return {"text": msg.data}
 	
-SubscribedTopics = (('test_topic', String, readString), ('display_text', String, readDisplayText))
+SubscribedTopics = (('test_topic', String, readString), ('display_command', String, readDisplayText))
