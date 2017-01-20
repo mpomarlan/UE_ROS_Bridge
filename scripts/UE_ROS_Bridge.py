@@ -92,7 +92,7 @@ def ROSPublishTopics(params):
             publisherEntry = publisherMap[topic]
             publisher = publisherEntry[0]
             reader = publisherEntry[1]
-            publihser.publish(reader(params))
+            publisher.publish(reader(params))
         elif (topic == 'huh'):
             print "Placeholder topic"
         else:

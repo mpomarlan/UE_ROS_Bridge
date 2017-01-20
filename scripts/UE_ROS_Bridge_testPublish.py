@@ -15,4 +15,5 @@ msgs = [{"topic": "tA", "params": {}}, {"topic": "huh", "params": {}},
         {"topic": "/tf", "params": {"frame_id": "World", "child_frame_id": "Human", "x": "5.0", "y": "7", "z": "3", "qx": "0.0", "qy": "0.7", "qz": "-0.7", "qw": "0.01"}}]
 
 result = remote_server.ROSPublishTopics(msgs)
+print result
 
