@@ -30,8 +30,9 @@ def readGoalStatusArray(params):
     msg = actionlib_msgs.msg.GoalStatusArray()
     msg.header.stamp = rospy.Time.now()
     msg.header.frame_id = "map"
-    goalMsg = readGoalStatus(params, '')
-    msg.status_list.append(goalMsg)
+    if ('goal_id' in params) and ('goal_status' in params):
+        goalMsg = readGoalStatus(params, '')
+        msg.status_list.append(goalMsg)
     if ('rejected_goal_id' in params) and ('rejected_goal_status' in params):
         rejMsg = readGoalStatus(params, 'rejected_')
         msg.status_list.append(rejMsg)
@@ -58,12 +59,16 @@ def readTakePictureFeedback(params):
     return msg
 
 def readMoveToResult(params):
+    print "FLY"
+    print params
     msg = sherpa_msgs.msg.MoveToActionResult()
     msg.header.stamp = rospy.Time.now()
     msg.header.frame_id = "map"
     msg.status = readGoalStatus(params, '')
+    print "."
     msg.result.moving = readBool(params['moving'])
     msg.result.reached = readBool(params['reached'])
+    print msg
     return msg
 
 def readMoveToFeedback(params):
@@ -75,10 +80,72 @@ def readMoveToFeedback(params):
     msg.feedback.reached = readBool(params['reached'])
     return msg
 
+def readToggleActuatorResult(params):
+    msg = sherpa_msgs.msg.ToggleActuatorActionResult()
+    msg.header.stamp = rospy.Time.now()
+    msg.header.frame_id = "map"
+    msg.status = readGoalStatus(params, '')
+    msg.result.state = readBool(params['state'])
+    return msg
+
+def readToggleActuatorFeedback(params):
+    msg = sherpa_msgs.msg.ToggleActuatorActionFeedback()
+    msg.header.stamp = rospy.Time.now()
+    msg.header.frame_id = "map"
+    msg.status = readGoalStatus(params, '')
+    msg.feedback.state = readBool(params['state'])
+    return msg
+
+def readSetAltitudeResult(params):
+    msg = sherpa_msgs.msg.SetAltitudeActionResult()
+    msg.header.stamp = rospy.Time.now()
+    msg.header.frame_id = "map"
+    if 'rejected_goal_id' in params:
+        msg.status = readGoalStatus(params, 'rejected_')
+        return msg
+    msg.status = readGoalStatus(params, '')
+    msg.result.motors_on = readBool(params['motors_on'])
+    msg.result.motor_hw_available = readBool(params['motor_hw_available'])
+    msg.result.reached = readBool(params['reached'])
+    msg.result.current_altitude = float(params['current_altitude'])
+    return msg
+
+def readSetAltitudeFeedback(params):
+    msg = sherpa_msgs.msg.SetAltitudeActionFeedback()
+    msg.header.stamp = rospy.Time.now()
+    msg.header.frame_id = "map"
+    msg.status = readGoalStatus(params, '')
+    msg.feedback.motors_on = readBool(params['motors_on'])
+    msg.feedback.motor_hw_available = readBool(params['motor_hw_available'])
+    msg.feedback.reached = readBool(params['reached'])
+    msg.feedback.current_altitude = float(params['current_altitude'])
+    return msg
+
+def readBeacon(params):
+    msg = sherpa_msgs.msg.Beacon()
+    msg.direction.x = float(params['x'])
+    msg.direction.y = float(params['y'])
+    msg.direction.z = float(params['z'])
+    msg.beacon_value = float(params['beacon_value'])
+    msg.robot_name = str(params['robot_name'])
+    msg.header.stamp = rospy.Time.now()
+    msg.header.frame_id = "map"
+    return msg
+
 PublishedTopics = (('red_wasp/TakePicture/result', sherpa_msgs.msg.TakePictureActionResult, 1, readTakePictureResult), 
                    ('red_wasp/TakePicture/feedback', sherpa_msgs.msg.TakePictureActionFeedback, 1, readTakePictureFeedback),
                    ('red_wasp/TakePicture/status', actionlib_msgs.msg.GoalStatusArray, 1, readGoalStatusArray),
                    ('red_wasp/Fly/result', sherpa_msgs.msg.MoveToActionResult, 1, readMoveToResult), 
                    ('red_wasp/Fly/feedback', sherpa_msgs.msg.MoveToActionFeedback, 1, readMoveToFeedback),
-                   ('red_wasp/Fly/status', actionlib_msgs.msg.GoalStatusArray, 1, readGoalStatusArray))
+                   ('red_wasp/Fly/status', actionlib_msgs.msg.GoalStatusArray, 1, readGoalStatusArray),
+                   ('red_wasp/ToggleEngine/result', sherpa_msgs.msg.ToggleActuatorActionResult, 1, readToggleActuatorResult), 
+                   ('red_wasp/ToggleEngine/feedback', sherpa_msgs.msg.ToggleActuatorActionFeedback, 1, readToggleActuatorFeedback),
+                   ('red_wasp/ToggleEngine/status', actionlib_msgs.msg.GoalStatusArray, 1, readGoalStatusArray),
+                   ('red_wasp/SetAltitude/result', sherpa_msgs.msg.SetAltitudeActionResult, 1, readSetAltitudeResult),
+                   ('red_wasp/SetAltitude/feedback', sherpa_msgs.msg.SetAltitudeActionFeedback, 1, readSetAltitudeFeedback),
+                   ('red_wasp/SetAltitude/status', actionlib_msgs.msg.GoalStatusArray, 1, readGoalStatusArray),
+                   ('red_wasp/ToggleBeacon/result', sherpa_msgs.msg.ToggleActuatorActionResult, 1, readToggleActuatorResult),
+                   ('red_wasp/ToggleBeacon/feedback', sherpa_msgs.msg.ToggleActuatorActionFeedback, 1, readToggleActuatorFeedback),
+                   ('red_wasp/ToggleBeacon/status', actionlib_msgs.msg.GoalStatusArray, 1, readGoalStatusArray),
+                   ('red_wasp/beacon', sherpa_msgs.msg.Beacon, 1, readBeacon))
 

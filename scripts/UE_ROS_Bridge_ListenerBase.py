@@ -16,7 +16,7 @@ def makeCallback(mutex, messagePages, messageSendingPage, topicName, dataReader)
     return callback
 
 def makeServiceCaller(serviceHandle, mutex, messagePages, messageSendingPage, name, readQuery, readResponse):
-    responseKey = name + "_response"
+    responseKey = name + "Response"
     def caller(data):
         ROSRequest = readQuery(data)
         response = readResponse(serviceHandle(ROSRequest))
