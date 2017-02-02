@@ -17,6 +17,8 @@ import signal
 from UE_ROS_Bridge_ListenerBase import SetupListeners, SetupServiceListeners
 from UE_ROS_Bridge_PublisherBase import SetupPublishers
 
+from timeit import default_timer as timer
+
 import gevent
 import gevent.wsgi
 import gevent.queue
@@ -61,6 +63,7 @@ def ROSPublishTF(frame_id, child_frame_id, x, y, z, qx, qy, qz, qw):
                                 rospy.Time.now(),
                                 childFrameId,
                                 frameId)
+oldPI = 0
 
 @dispatcher.public
 def ROSPublishTopics(params):
@@ -68,6 +71,8 @@ def ROSPublishTopics(params):
     global messageSendingPage
     global pageMutex
     global publisherMap
+    global oldPI
+    startT = timer()
     tfMessages = tfMessage()
     seqTf = 0
     for message in params:
@@ -103,7 +108,16 @@ def ROSPublishTopics(params):
     messagePages[messageSendingPage[0]].clear()
     messageSendingPage[0] = messageSendingPage[0] ^ 1
     pageMutex.release()
+
+    print "PI: " + str(messageSendingPage[0]) + " " + str(oldPI ^ messageSendingPage[0])
+    if 0 == oldPI ^ messageSendingPage[0]:
+        print "!!!!!!! FLIP !!!!!!!"
+    oldPI = messageSendingPage[0]
+    if messagePages[messageSendingPage[0]] != {}:
+        print str({"messages": messagePages[messageSendingPage[0]]})
     
+    endT = timer()
+    print "T: " + str(endT - startT)
     return {"messages": messagePages[messageSendingPage[0]]}
 
 def exit_gracefully(signum, frame):
