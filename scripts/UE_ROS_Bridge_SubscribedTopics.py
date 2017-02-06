@@ -28,17 +28,22 @@ def readMoveToGoal(msg):
             "qx": str(msg.goal.goal.pose.orientation.x), "qy": str(msg.goal.goal.pose.orientation.y), "qz": str(msg.goal.goal.pose.orientation.z), "qw": str(msg.goal.goal.pose.orientation.w)}
 
 def readToggleActuatorActionGoal(msg):
-    print "TOGGLE GOAL"
     print str({"goalId": str(msg.goal_id.id), "command": bool2Str(msg.goal.command)})
     return {"goalId": str(msg.goal_id.id), "command": bool2Str(msg.goal.command)}
 
 def readSetAltitudeActionGoal(msg):
     return {"goalId": str(msg.goal_id.id), "altitude": str(msg.goal.altitude)}
 
+def readMountActionGoal(msg):
+    print "Donkey"
+    print {"goalId": str(msg.goal_id.id), "target_name": str(msg.goal.target_name), "mounted_state": bool2Str(msg.goal.mounted_state)}
+    return {"goalId": str(msg.goal_id.id), "target_name": str(msg.goal.target_name), "mounted_state": bool2Str(msg.goal.mounted_state)}
+
 SubscribedTopics = (('test_topic', String, readString), ('display_command', String, readDisplayText), 
                     ('red_wasp/TakePicture/goal', sherpa_msgs.msg.TakePictureActionGoal, readTakePictureGoal), ('red_wasp/TakePicture/cancel', actionlib_msgs.msg.GoalID, readActionlibCancel),
                     ('red_wasp/Fly/goal', sherpa_msgs.msg.MoveToActionGoal, readMoveToGoal), ('red_wasp/Fly/cancel', actionlib_msgs.msg.GoalID, readActionlibCancel),
                     ('red_wasp/ToggleEngine/goal', sherpa_msgs.msg.ToggleActuatorActionGoal, readToggleActuatorActionGoal), ('red_wasp/ToggleEngine/cancel', actionlib_msgs.msg.GoalID, readActionlibCancel),
                     ('red_wasp/SetAltitude/goal', sherpa_msgs.msg.SetAltitudeActionGoal, readSetAltitudeActionGoal), ('red_wasp/SetAltitude/cancel', actionlib_msgs.msg.GoalID, readActionlibCancel),
-                    ('red_wasp/ToggleBeacon/goal', sherpa_msgs.msg.ToggleActuatorActionGoal, readToggleActuatorActionGoal), ('red_wasp/ToggleBeacon/cancel', actionlib_msgs.msg.GoalID, readActionlibCancel))
+                    ('red_wasp/ToggleBeacon/goal', sherpa_msgs.msg.ToggleActuatorActionGoal, readToggleActuatorActionGoal), ('red_wasp/ToggleBeacon/cancel', actionlib_msgs.msg.GoalID, readActionlibCancel),
+                    ('donkey/Mount/goal', sherpa_msgs.msg.MountActionGoal, readMountActionGoal), ('donkey/Mount/cancel', actionlib_msgs.msg.GoalID, readActionlibCancel))
 

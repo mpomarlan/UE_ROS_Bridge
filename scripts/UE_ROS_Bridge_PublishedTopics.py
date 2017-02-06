@@ -132,6 +132,46 @@ def readBeacon(params):
     msg.header.frame_id = "map"
     return msg
 
+def readBattery(params):
+    msg = sherpa_msgs.msg.Battery()
+    msg.batery_level = float(params['battery_level'])
+    msg.battery_drain = float(params['battery_drain'])
+    return msg
+
+def readMountActionResult(params):
+    msg = sherpa_msgs.msg.MountActionResult()
+    msg.header.stamp = rospy.Time.now()
+    msg.header.frame_id = "map"
+    msg.status = readGoalStatus(params, '')
+    if 'target_found' in params:
+        msg.result.target_found = readBool(params['target_found'])
+    if 'space_available' in params:
+        msg.result.target_found = readBool(params['space_available'])
+    if 'mounting_hw_available' in params:
+        msg.result.target_found = readBool(params['mounting_hw_available'])
+    if 'manipulation_error' in params:
+        msg.result.target_found = readBool(params['manipulation_error'])
+    if 'mounted_target' in params:
+        msg.result.target_found = readBool(params['mounted_target'])
+    return msg
+
+def readMountActionFeedback(params):
+    msg = sherpa_msgs.msg.MountActionFeedback()
+    msg.header.stamp = rospy.Time.now()
+    msg.header.frame_id = "map"
+    msg.status = readGoalStatus(params, '')
+    if 'target_found' in params:
+        msg.feedback.target_found = readBool(params['target_found'])
+    if 'space_available' in params:
+        msg.feedback.target_found = readBool(params['space_available'])
+    if 'mounting_hw_available' in params:
+        msg.feedback.target_found = readBool(params['mounting_hw_available'])
+    if 'manipulation_error' in params:
+        msg.feedback.target_found = readBool(params['manipulation_error'])
+    if 'mounted_target' in params:
+        msg.feedback.target_found = readBool(params['mounted_target'])
+    return msg
+
 PublishedTopics = (('red_wasp/TakePicture/result', sherpa_msgs.msg.TakePictureActionResult, 1, readTakePictureResult), 
                    ('red_wasp/TakePicture/feedback', sherpa_msgs.msg.TakePictureActionFeedback, 1, readTakePictureFeedback),
                    ('red_wasp/TakePicture/status', actionlib_msgs.msg.GoalStatusArray, 1, readGoalStatusArray),
@@ -147,5 +187,10 @@ PublishedTopics = (('red_wasp/TakePicture/result', sherpa_msgs.msg.TakePictureAc
                    ('red_wasp/ToggleBeacon/result', sherpa_msgs.msg.ToggleActuatorActionResult, 1, readToggleActuatorResult),
                    ('red_wasp/ToggleBeacon/feedback', sherpa_msgs.msg.ToggleActuatorActionFeedback, 1, readToggleActuatorFeedback),
                    ('red_wasp/ToggleBeacon/status', actionlib_msgs.msg.GoalStatusArray, 1, readGoalStatusArray),
-                   ('red_wasp/beacon', sherpa_msgs.msg.Beacon, 1, readBeacon))
+                   ('red_wasp/beacon', sherpa_msgs.msg.Beacon, 1, readBeacon),
+                   ('red_wasp/battery', sherpa_msgs.msg.Battery, 1, readBattery),
+                   ('donkey/Drive/status', actionlib_msgs.msg.GoalStatusArray, 1, readGoalStatusArray),
+                   ('donkey/Mount/result', sherpa_msgs.msg.MountActionResult, 1, readMountActionResult),
+                   ('donkey/Mount/feedback', sherpa_msgs.msg.MountActionFeedback, 1, readMountActionFeedback),
+                   ('donkey/Mount/status', actionlib_msgs.msg.GoalStatusArray, 1, readGoalStatusArray))
 
