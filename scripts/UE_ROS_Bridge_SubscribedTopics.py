@@ -45,5 +45,15 @@ SubscribedTopics = (('test_topic', String, readString), ('display_command', Stri
                     ('red_wasp/ToggleEngine/goal', sherpa_msgs.msg.ToggleActuatorActionGoal, readToggleActuatorActionGoal), ('red_wasp/ToggleEngine/cancel', actionlib_msgs.msg.GoalID, readActionlibCancel),
                     ('red_wasp/SetAltitude/goal', sherpa_msgs.msg.SetAltitudeActionGoal, readSetAltitudeActionGoal), ('red_wasp/SetAltitude/cancel', actionlib_msgs.msg.GoalID, readActionlibCancel),
                     ('red_wasp/ToggleBeacon/goal', sherpa_msgs.msg.ToggleActuatorActionGoal, readToggleActuatorActionGoal), ('red_wasp/ToggleBeacon/cancel', actionlib_msgs.msg.GoalID, readActionlibCancel),
+                    ('blue_wasp/TakePicture/goal', sherpa_msgs.msg.TakePictureActionGoal, readTakePictureGoal), ('blue_wasp/TakePicture/cancel', actionlib_msgs.msg.GoalID, readActionlibCancel),
+                    ('blue_wasp/Fly/goal', sherpa_msgs.msg.MoveToActionGoal, readMoveToGoal), ('blue_wasp/Fly/cancel', actionlib_msgs.msg.GoalID, readActionlibCancel),
+                    ('blue_wasp/ToggleEngine/goal', sherpa_msgs.msg.ToggleActuatorActionGoal, readToggleActuatorActionGoal), ('blue_wasp/ToggleEngine/cancel', actionlib_msgs.msg.GoalID, readActionlibCancel),
+                    ('blue_wasp/SetAltitude/goal', sherpa_msgs.msg.SetAltitudeActionGoal, readSetAltitudeActionGoal), ('blue_wasp/SetAltitude/cancel', actionlib_msgs.msg.GoalID, readActionlibCancel),
+                    ('blue_wasp/ToggleBeacon/goal', sherpa_msgs.msg.ToggleActuatorActionGoal, readToggleActuatorActionGoal), ('blue_wasp/ToggleBeacon/cancel', actionlib_msgs.msg.GoalID, readActionlibCancel),
+                    ('hawk/TakePicture/goal', sherpa_msgs.msg.TakePictureActionGoal, readTakePictureGoal), ('hawk/TakePicture/cancel', actionlib_msgs.msg.GoalID, readActionlibCancel),
+                    ('hawk/Fly/goal', sherpa_msgs.msg.MoveToActionGoal, readMoveToGoal), ('hawk/Fly/cancel', actionlib_msgs.msg.GoalID, readActionlibCancel),
+                    ('hawk/ToggleEngine/goal', sherpa_msgs.msg.ToggleActuatorActionGoal, readToggleActuatorActionGoal), ('hawk/ToggleEngine/cancel', actionlib_msgs.msg.GoalID, readActionlibCancel),
+                    ('hawk/SetAltitude/goal', sherpa_msgs.msg.SetAltitudeActionGoal, readSetAltitudeActionGoal), ('hawk/SetAltitude/cancel', actionlib_msgs.msg.GoalID, readActionlibCancel),
+                    ('hawk/ToggleBeacon/goal', sherpa_msgs.msg.ToggleActuatorActionGoal, readToggleActuatorActionGoal), ('hawk/ToggleBeacon/cancel', actionlib_msgs.msg.GoalID, readActionlibCancel),
                     ('donkey/Mount/goal', sherpa_msgs.msg.MountActionGoal, readMountActionGoal), ('donkey/Mount/cancel', actionlib_msgs.msg.GoalID, readActionlibCancel))
 
