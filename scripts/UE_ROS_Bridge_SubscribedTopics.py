@@ -55,5 +55,6 @@ SubscribedTopics = (('test_topic', String, readString), ('display_command', Stri
                     ('hawk/ToggleEngine/goal', sherpa_msgs.msg.ToggleActuatorActionGoal, readToggleActuatorActionGoal), ('hawk/ToggleEngine/cancel', actionlib_msgs.msg.GoalID, readActionlibCancel),
                     ('hawk/SetAltitude/goal', sherpa_msgs.msg.SetAltitudeActionGoal, readSetAltitudeActionGoal), ('hawk/SetAltitude/cancel', actionlib_msgs.msg.GoalID, readActionlibCancel),
                     ('hawk/ToggleBeacon/goal', sherpa_msgs.msg.ToggleActuatorActionGoal, readToggleActuatorActionGoal), ('hawk/ToggleBeacon/cancel', actionlib_msgs.msg.GoalID, readActionlibCancel),
-                    ('donkey/Mount/goal', sherpa_msgs.msg.MountActionGoal, readMountActionGoal), ('donkey/Mount/cancel', actionlib_msgs.msg.GoalID, readActionlibCancel))
+                    ('donkey/Mount/goal', sherpa_msgs.msg.MountActionGoal, readMountActionGoal), ('donkey/Mount/cancel', actionlib_msgs.msg.GoalID, readActionlibCancel),
+                    ('donkey/Drive/goal', sherpa_msgs.msg.MoveToActionGoal, readMoveToGoal), ('donkey/Drive/cancel', actionlib_msgs.msg.GoalID, readActionlibCancel))
 
