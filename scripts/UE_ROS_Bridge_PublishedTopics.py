@@ -209,6 +209,30 @@ def readMountActionFeedback(params):
         msg.feedback.target_found = readBool(params['mounted_target'])
     return msg
 
+def readLogEventActionResult(params):
+    msg = sherpa_msgs.msg.LogEventActionResult()
+    msg.header.stamp = rospy.Time.now()
+    msg.header.frame_id = "map"
+    if 'rejected_goal_id' in params:
+        msg.status = readGoalStatus(params, 'rejected_')
+        return msg
+    msg.status = readGoalStatus(params, '')
+    if 'logged' in params:
+        msg.result.logged = readBool(params['logged'])
+    return msg
+
+def readLogEventActionFeedback(params):
+    msg = sherpa_msgs.msg.LogEventActionFeedback()
+    msg.header.stamp = rospy.Time.now()
+    msg.header.frame_id = "map"
+    if 'rejected_goal_id' in params:
+        msg.status = readGoalStatus(params, 'rejected_')
+        return msg
+    msg.status = readGoalStatus(params, '')
+    if 'logged' in params:
+        msg.feedback.logged = readBool(params['logged'])
+    return msg
+
 PublishedTopics = (('red_wasp/TakePicture/result', sherpa_msgs.msg.TakePictureActionResult, 1, readTakePictureResult), 
                    ('red_wasp/TakePicture/feedback', sherpa_msgs.msg.TakePictureActionFeedback, 1, readTakePictureFeedback),
                    ('red_wasp/TakePicture/status', actionlib_msgs.msg.GoalStatusArray, 1, readGoalStatusArray),
@@ -263,5 +287,8 @@ PublishedTopics = (('red_wasp/TakePicture/result', sherpa_msgs.msg.TakePictureAc
                    ('donkey/Drive/status', actionlib_msgs.msg.GoalStatusArray, 1, readGoalStatusArray),
                    ('donkey/Mount/result', sherpa_msgs.msg.MountActionResult, 1, readMountActionResult),
                    ('donkey/Mount/feedback', sherpa_msgs.msg.MountActionFeedback, 1, readMountActionFeedback),
-                   ('donkey/Mount/status', actionlib_msgs.msg.GoalStatusArray, 1, readGoalStatusArray))
+                   ('donkey/Mount/status', actionlib_msgs.msg.GoalStatusArray, 1, readGoalStatusArray),
+                   ('ue_semlog/LogEvent/result', sherpa_msgs.msg.LogEventActionResult, 1, readLogEventActionResult),
+                   ('ue_semlog/LogEvent/feedback', sherpa_msgs.msg.LogEventActionFeedback, 1, readLogEventActionFeedback),
+                   ('ue_semlog/LogEvent/status', actionlib_msgs.msg.GoalStatusArray, 1, readGoalStatusArray))
 
