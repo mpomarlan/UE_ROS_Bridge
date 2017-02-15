@@ -39,9 +39,6 @@ def readMountActionGoal(msg):
     print {"goalId": str(msg.goal_id.id), "target_name": str(msg.goal.target_name), "mounted_state": bool2Str(msg.goal.mounted_state)}
     return {"goalId": str(msg.goal_id.id), "target_name": str(msg.goal.target_name), "mounted_state": bool2Str(msg.goal.mounted_state)}
 
-def LoggedIdentifier2Str(msg):
-    return str(msg.goal.event_identifier.namespace) + "|" + str(msg.goal.event_identifier.name) + "|" + str(msg.goal.event_identifier.id) + "|" + str(msg.goal.event_identifier.id_type)
-
 def LoggedRDFEntry2Str(msg):
     return str(msg.property_name) + "|" + str(msg.rdf_datatype) + "|" + str(msg.value) + "|" + str(msg.rdf_resource) + "|" + bool2Str(msg.use_resource)
 
@@ -51,9 +48,10 @@ def readLogEventActionGoal(msg):
     rdf_entries = ""
     for rdf_entry in msg.goal.rdf_entries:
         rdf_entries = rdf_entries + "@" + LoggedRDFEntry2Str(msg.goal.rdf_entries)
-    return {"goalId": str(msg.goal_id.id), 
-            "event_identifier": event_identifier,
-            "event_type": event_type,
+    return {"goalId": str(msg.goal_id.id),
+            "name": str(msg.goal.name),
+            "name_id_flag": str(msg.goal.name_id_flag),
+            "type": str(msg.goal.type),
             "rdf_entries": rdf_entries}
 
 SubscribedTopics = (('test_topic', String, readString), ('display_command', String, readDisplayText), 
