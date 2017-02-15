@@ -39,6 +39,23 @@ def readMountActionGoal(msg):
     print {"goalId": str(msg.goal_id.id), "target_name": str(msg.goal.target_name), "mounted_state": bool2Str(msg.goal.mounted_state)}
     return {"goalId": str(msg.goal_id.id), "target_name": str(msg.goal.target_name), "mounted_state": bool2Str(msg.goal.mounted_state)}
 
+def LoggedIdentifier2Str(msg):
+    return str(msg.goal.event_identifier.namespace) + "|" + str(msg.goal.event_identifier.name) + "|" + str(msg.goal.event_identifier.id) + "|" + str(msg.goal.event_identifier.id_type)
+
+def LoggedRDFEntry2Str(msg):
+    return str(msg.property_name) + "|" + str(msg.rdf_datatype) + "|" + str(msg.value) + "|" + str(msg.rdf_resource) + "|" + bool2Str(msg.use_resource)
+
+def readLogEventActionGoal(msg):
+    event_identifier = LoggedIdentifier2Str(msg.goal.event_identifier)
+    event_type = LoggedRDFEntry2Str(msg.goal.event_type)
+    rdf_entries = ""
+    for rdf_entry in msg.goal.rdf_entries:
+        rdf_entries = rdf_entries + "@" + LoggedRDFEntry2Str(msg.goal.rdf_entries)
+    return {"goalId": str(msg.goal_id.id), 
+            "event_identifier": event_identifier,
+            "event_type": event_type,
+            "rdf_entries": rdf_entries}
+
 SubscribedTopics = (('test_topic', String, readString), ('display_command', String, readDisplayText), 
                     ('red_wasp/TakePicture/goal', sherpa_msgs.msg.TakePictureActionGoal, readTakePictureGoal), ('red_wasp/TakePicture/cancel', actionlib_msgs.msg.GoalID, readActionlibCancel),
                     ('red_wasp/Fly/goal', sherpa_msgs.msg.MoveToActionGoal, readMoveToGoal), ('red_wasp/Fly/cancel', actionlib_msgs.msg.GoalID, readActionlibCancel),
@@ -55,5 +72,7 @@ SubscribedTopics = (('test_topic', String, readString), ('display_command', Stri
                     ('hawk/ToggleEngine/goal', sherpa_msgs.msg.ToggleActuatorActionGoal, readToggleActuatorActionGoal), ('hawk/ToggleEngine/cancel', actionlib_msgs.msg.GoalID, readActionlibCancel),
                     ('hawk/SetAltitude/goal', sherpa_msgs.msg.SetAltitudeActionGoal, readSetAltitudeActionGoal), ('hawk/SetAltitude/cancel', actionlib_msgs.msg.GoalID, readActionlibCancel),
                     ('hawk/ToggleBeacon/goal', sherpa_msgs.msg.ToggleActuatorActionGoal, readToggleActuatorActionGoal), ('hawk/ToggleBeacon/cancel', actionlib_msgs.msg.GoalID, readActionlibCancel),
-                    ('donkey/Mount/goal', sherpa_msgs.msg.MountActionGoal, readMountActionGoal), ('donkey/Mount/cancel', actionlib_msgs.msg.GoalID, readActionlibCancel))
+                    ('donkey/Mount/goal', sherpa_msgs.msg.MountActionGoal, readMountActionGoal), ('donkey/Mount/cancel', actionlib_msgs.msg.GoalID, readActionlibCancel),
+                    ('donkey/Drive/goal', sherpa_msgs.msg.MoveToActionGoal, readMoveToGoal), ('donkey/Drive/cancel', actionlib_msgs.msg.GoalID, readActionlibCancel),
+                    ('ue_semlog/LogEvent/goal', sherpa_msgs.msg.LogEventActionGoal, readLogEventActionGoal), ('ue_semlog/LogEvent/cancel', actionlib_msgs.msg.GoalID, readActionlibCancel))
 
