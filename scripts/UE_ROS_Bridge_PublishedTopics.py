@@ -165,7 +165,7 @@ def readBeacon(params):
 
 def readBattery(params):
     msg = sherpa_msgs.msg.Battery()
-    msg.batery_level = float(params['battery_level'])
+    msg.battery_level = float(params['battery_level'])
     msg.battery_drain = float(params['battery_drain'])
     return msg
 

@@ -43,11 +43,9 @@ def LoggedRDFEntry2Str(msg):
     return str(msg.property_name) + "|" + str(msg.rdf_datatype) + "|" + str(msg.value) + "|" + str(msg.rdf_resource) + "|" + bool2Str(msg.use_resource)
 
 def readLogEventActionGoal(msg):
-    event_identifier = LoggedIdentifier2Str(msg.goal.event_identifier)
-    event_type = LoggedRDFEntry2Str(msg.goal.event_type)
     rdf_entries = ""
     for rdf_entry in msg.goal.rdf_entries:
-        rdf_entries = rdf_entries + "@" + LoggedRDFEntry2Str(msg.goal.rdf_entries)
+        rdf_entries = rdf_entries + "@" + LoggedRDFEntry2Str(rdf_entry)
     return {"goalId": str(msg.goal_id.id),
             "name": str(msg.goal.name),
             "name_id_flag": str(msg.goal.name_id_flag),
