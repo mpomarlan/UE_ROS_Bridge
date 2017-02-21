@@ -43,6 +43,8 @@ def LoggedRDFEntry2Str(msg):
     return str(msg.property_name) + "|" + str(msg.rdf_datatype) + "|" + str(msg.value) + "|" + str(msg.rdf_resource) + "|" + bool2Str(msg.use_resource)
 
 def readLogEventActionGoal(msg):
+    print "LOGGING"
+    print msg
     rdf_entries = ""
     for rdf_entry in msg.goal.rdf_entries:
         rdf_entries = rdf_entries + "@" + LoggedRDFEntry2Str(rdf_entry)
