@@ -153,14 +153,15 @@ def readSetAltitudeFeedback(params):
     return msg
 
 def readBeacon(params):
+    print params
     msg = sherpa_msgs.msg.Beacon()
     msg.direction.x = float(params['x'])
     msg.direction.y = float(params['y'])
     msg.direction.z = float(params['z'])
     msg.beacon_value = float(params['beacon_value'])
     msg.robot_name = str(params['robot_name'])
-    msg.header.stamp = rospy.Time.now()
-    msg.header.frame_id = "map"
+    print "Msg"
+    print msg
     return msg
 
 def readBattery(params):
